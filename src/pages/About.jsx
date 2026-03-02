@@ -228,7 +228,7 @@ export default function About() {
                 />
                 <div className="absolute bottom-0 left-0 right-0 bg-linear-to-t from-black/80 to-transparent p-6">
                   <p className="text-white font-medium text-sm sm:text-base">
-                    Precision engineered in our Bihar facility
+                    Precision engineered in our Manesar facility
                   </p>
                 </div>
               </div>
