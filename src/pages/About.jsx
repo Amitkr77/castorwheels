@@ -105,7 +105,7 @@ export default function About() {
           </div>
 
           {/* Content */}
-          <div className="text-lg prose prose-lg md:prose-xl prose-slate dark:prose-invert mx-auto max-w-7xl text-center lg:text-left">
+          <div className="text-lg prose prose-lg md:prose-xl prose-slate dark:prose-invert mx-auto max-w-7xl text-center lg:text-justify">
             <p className="leading-relaxed text-gray-700 ">
               <strong className="text-blue-600 dark:text-blue-400 font-semibold">
                 Casters Global

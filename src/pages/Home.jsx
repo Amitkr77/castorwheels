@@ -77,6 +77,9 @@ export default function Home() {
                 Explore All Solutions
                 <MdArrowOutward className="text-lg transition-transform duration-300 group-hover:translate-x-0.5" />
               </Link>
+              
+
+
             </div>
 
             {/* Grid */}

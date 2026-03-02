@@ -29,8 +29,9 @@ const PRODUCTS = [
     title: "Automotive Assembly Casters",
     description: "Designed for automotive assembly lines and production flow.",
     features: ["High precision | PU / Nylon", "Assembly Lines"],
-    imageSrc: "/images/automotive-assembly.jpg",
+    imageSrc: "/manufacture.png",
     alt: "Automotive Assembly Caster",
+    
     loadRange: "Medium–Heavy",
     wheelMaterial: ["PU", "Nylon"],
     category: "automotiveAssembly",
@@ -41,7 +42,7 @@ const PRODUCTS = [
     title: "Furniture Casters",
     description: "Smooth rolling casters for furniture and interior use.",
     features: ["Quiet movement | Rubber", "Home & Office Furniture"],
-    imageSrc: "/images/furniture-casters.jpg",
+    imageSrc: "/furniture_caster.png",
     alt: "Furniture Caster",
     loadRange: "Light–Medium",
     wheelMaterial: ["Rubber"],
@@ -53,7 +54,7 @@ const PRODUCTS = [
     title: "Medical Casters",
     description: "Hygienic and silent casters for medical environments.",
     features: ["Non-marking | Lockable", "Hospitals, Labs"],
-    imageSrc: "/images/medical-casters.jpg",
+    imageSrc: "/medical_caster.png",
     alt: "Medical Caster",
     loadRange: "Light–Medium",
     wheelMaterial: ["TPR", "PU"],
@@ -65,7 +66,7 @@ const PRODUCTS = [
     title: "Warehouse & Logistics Casters",
     description: "Built for continuous movement and heavy warehouse use.",
     features: ["Shock resistant | PU / Nylon", "Logistics & Distribution"],
-    imageSrc: "/images/warehouse-logistics.jpg",
+    imageSrc: "/warehouse_caster.png",
     alt: "Warehouse Logistics Caster",
     loadRange: "Medium–Heavy",
     wheelMaterial: ["PU", "Nylon"],
@@ -77,7 +78,7 @@ const PRODUCTS = [
     title: "Custom Caster Solutions",
     description: "Tailor-made caster solutions for unique requirements.",
     features: ["Custom load & size", "Special applications"],
-    imageSrc: "/images/custom-solution.jpg",
+    imageSrc: "/customCaster.png",
     alt: "Custom Caster Solution",
     loadRange: "Custom",
     wheelMaterial: ["Custom"],
@@ -189,7 +190,7 @@ export default function Solution() {
         {/* Product Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredProducts.length === 0 ? (
-            <p className="col-span-full text-center text-slate-500 dark:text-slate-400 py-12">
+            <p className="h-48 w-auto object-contain mix-blend-multiply dark:mix-blend-normal">
               No products match the selected filters.
             </p>
           ) : (
@@ -240,16 +241,19 @@ export default function Solution() {
 function ProductCard({ title, description, features, imageSrc, alt, path }) {
   return (
     <div className="product-card glass-effect rounded-2xl p-6 flex flex-col hover:shadow-xl transition-shadow duration-300">
-      <div className="bg-white/50 dark:bg-slate-900/50 rounded-xl p-4 mb-6 flex justify-center min-h-50 items-center">
+      
+      {/* Image Container */}
+      <div className="relative bg-white/50 dark:bg-slate-900/50 rounded-xl mb-6 h-52 overflow-hidden">
         <img
-          alt={alt}
-          className="h-48 w-auto object-contain mix-blend-multiply dark:mix-blend-normal"
           src={imageSrc}
+          alt={alt}
           loading="lazy"
+          className="absolute inset-0 w-full h-full object-cover mix-blend-multiply dark:mix-blend-normal"
         />
       </div>
 
       <h3 className="text-xl font-bold mb-2">{title}</h3>
+
       <p className="text-slate-500 dark:text-slate-400 text-sm mb-4">
         {description}
       </p>
@@ -272,3 +276,4 @@ function ProductCard({ title, description, features, imageSrc, alt, path }) {
     </div>
   );
 }
+

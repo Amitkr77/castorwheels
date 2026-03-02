@@ -119,7 +119,7 @@ export default function Header() {
             </Link>
 
             {/* Desktop Nav */}
-            <nav className="hidden lg:flex items-center gap-2">
+            <nav className="hidden lg:flex items-center gap-2 absolute left-1/2 -translate-x-1/2">
               {mainNavItems.map((item) =>
                 item.items ? (
                   <div

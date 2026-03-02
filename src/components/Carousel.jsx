@@ -149,7 +149,7 @@ export default function HeroCarousel() {
               </a>
 
               <a
-                href="#contact"
+                href="request-info"
                 className="flex items-center justify-center rounded-full bg-linear-to-r from-blue-500 to-blue-600 px-10 py-4 text-base sm:text-lg font-bold text-white shadow-xl hover:shadow-2xl hover:brightness-110 transition-all duration-300 active:scale-95 border border-blue-400/30"
               >
                 Get a Quote
