@@ -1,308 +1,414 @@
-import { IoStorefront } from "react-icons/io5";
+"use client";
+import React, { useState } from "react";
+import {
+  IoCheckmarkCircleOutline,
+  IoAlertCircleOutline,
+  IoStorefrontOutline,
+  IoMailOutline,
+  IoTimeOutline,
+} from "react-icons/io5";
 import { FaPhoneAlt } from "react-icons/fa";
-import { CiMail } from "react-icons/ci";
-import { MdOpenInNew } from "react-icons/md";
-import { MdOutlineVerified } from "react-icons/md";
-import { FaChevronDown } from "react-icons/fa";
-import React from "react";
-import { MdOutlineSchedule } from "react-icons/md";
+import { MdOutlineVerified, MdOpenInNew } from "react-icons/md";
+import { motion } from "framer-motion"; // optional – for micro-animations (npm install framer-motion)
+
+const SCRIPT_URL = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec"; // ← replace
 
 export default function Contact() {
+  const [formData, setFormData] = useState({
+    name: "",
+    company: "",
+    email: "",
+    interest: "",
+    message: "",
+    website: "", // honeypot – leave empty
+  });
+
+  const [status, setStatus] = useState("idle");
+  const [errorMsg, setErrorMsg] = useState("");
+
+  const handleChange = (
+    e
+  ) => {
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+    // Clear error when user starts typing again
+    if (status === "error") setStatus("idle");
+  };
+
+  const validateForm = () => {
+    if (!formData.name.trim()) return "Full name is required";
+    if (!formData.email.trim()) return "Work email is required";
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email))
+      return "Please enter a valid email address";
+    if (!formData.interest) return "Please select what you're interested in";
+    return "";
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const validationError = validateForm();
+    if (validationError) {
+      setStatus("error");
+      setErrorMsg(validationError);
+      return;
+    }
+
+    // Very basic honeypot check
+    if (formData.website.trim()) {
+      setStatus("error");
+      setErrorMsg("Submission failed. Please try again.");
+      return;
+    }
+
+    setStatus("loading");
+    setErrorMsg("");
+
+    try {
+      const response = await fetch(SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors", // ← important for Google Apps Script
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      // With no-cors we cannot read response.ok → we assume success if no network error
+      setStatus("success");
+      setFormData({
+        name: "",
+        company: "",
+        email: "",
+        interest: "",
+        message: "",
+        website: "",
+      });
+    } catch (err) {
+      console.error(err);
+      setStatus("error");
+      setErrorMsg("Something went wrong. Please try again or email us directly.");
+    }
+  };
+
   return (
-    <section>
-      <div className="relative w-full bg-slate-900">
+    <section className="min-h-screen bg-slate-50 dark:bg-slate-950">
+      {/* Hero */}
+      <div className="relative isolate">
         <div
-          className="absolute inset-0 bg-cover bg-center opacity-40 mix-blend-overlay"
-          data-alt="Industrial factory floor with machinery"
+          className="absolute inset-0 bg-cover bg-center opacity-30 mix-blend-overlay"
           style={{
             backgroundImage:
-              "url('https://lh3.googleusercontent.com/aida-public/AB6AXuDaJgGZZatbToKxXrct-Erneh_clnKrizuRQhVde15D83sIFboX6_L_9nDmJwjkHmMZGrcZn1v0z4vwvAmVyaRMLxP7-E3c9B9Abty8Y1LInUoB2DX4LTCAGsVW71yFNOdAMzb0Qn7Tmf-XujTAtXcEP4xXNqO8A6xMfD8nGGg4Ou1fmaFoxnB4Y_jIEcAKgClkAtkSeg_f9g6eYwkSWzpZzGmNVj6NG8wu4z82kVU8fCOjYiHRDfLAf1qFTaXVo7vmt5mCHs4rIVVZ')",
+              "url('https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80')", // ← better industrial image suggestion
           }}
-        ></div>
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-900/90 to-slate-900/40"></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 flex flex-col justify-center min-h-[300px]">
-          <h1 className="text-white text-4xl md:text-5xl font-black leading-tight tracking-tight mb-4">
-            Let's Connect
-          </h1>
-          <p className="text-slate-200 text-lg md:text-xl font-normal max-w-2xl leading-relaxed">
-            Explore our engineering portfolio. We are ready to discuss your
-            requirements and share information about our mobility solutions.
-          </p>
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-900/80 via-slate-900/60 to-slate-900/90" />
+
+        <div className="relative mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8">
+          <div className="mx-auto max-w-3xl text-center">
+            <h1 className="text-4xl font-black tracking-tight text-white sm:text-6xl">
+              Let's Start a Conversation
+            </h1>
+            <p className="mt-6 text-lg leading-8 text-slate-200">
+              Tell us about your project. We're ready to help with industrial castors, custom solutions, or anything mobility-related.
+            </p>
+          </div>
         </div>
       </div>
-      <main className="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-          <div className="lg:col-span-7 xl:col-span-8 flex flex-col gap-6">
-            <div>
-              <h2 className="text-slate-900  text-3xl font-bold tracking-tight mb-2 text-center">
-                Request Information
+
+      <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
+          {/* ─── Form Side ──────────────────────────────────────── */}
+          <div className="lg:col-span-7 xl:col-span-8">
+            <div className="rounded-2xl bg-white p-8 shadow-xl ring-1 ring-slate-200/70 dark:bg-slate-900 dark:ring-slate-700/50">
+              <h2 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">
+                Request a Quote or Information
               </h2>
-              <p className="text-slate-900 dark:text-slate-900 text-center">
-                Complete the form below for general inquiries or to learn more
-                about our products.
+              <p className="mt-3 text-slate-600 dark:text-slate-400">
+                Fill in the details below — we'll reply within 1–2 business days.
               </p>
-            </div>
-            <form className="bg-white  p-6 md:p-8 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                <label className="flex flex-col gap-2 ">
-                  <span className="text-black font-semibold">Full Name</span>
-                  <input
-                    className="w-full h-12 px-4 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all placeholder:text-slate-400 dark:text-white"
-                    placeholder="John Doe"
-                    type="text"
-                  />
-                </label>
-                <label className="flex flex-col gap-2">
-                  <span className="text-slate-900  font-semibold">
-                    Company Name
-                  </span>
-                  <input
-                    className="w-full h-12 px-4 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all placeholder:text-slate-400 dark:text-white"
-                    placeholder="Your Company"
-                    type="text"
-                  />
-                </label>
-                <label className="flex flex-col gap-2">
-                  <span className="text-slate-900  text-sm font-semibold">
-                    Phone Number
-                  </span>
-                  <div className="relative">
-                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 dark:text-slate-400 font-medium border-r border-slate-300 dark:border-slate-600 pr-2 mr-2">
-                      +91
-                    </span>
+
+              <form onSubmit={handleSubmit} className="mt-10 space-y-7">
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                  <div>
+                    <label
+                      htmlFor="name"
+                      className="block text-sm font-semibold text-slate-700 dark:text-slate-300"
+                    >
+                      Full Name *
+                    </label>
                     <input
-                      className="w-full h-12 pl-16 pr-4 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all placeholder:text-slate-400 dark:text-white"
-                      placeholder="98XXX XXXXX"
-                      type="tel"
+                      id="name"
+                      name="name"
+                      type="text"
+                      autoComplete="name"
+                      required
+                      value={formData.name}
+                      onChange={handleChange}
+                      className="mt-1.5 block w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-slate-900 placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:border-slate-600 dark:bg-slate-800 dark:text-white dark:placeholder-slate-500"
                     />
                   </div>
-                </label>
-                <label className="flex flex-col gap-2">
-                  <span className="text-slate-900 text-sm font-semibold">
-                    Email Address
-                  </span>
-                  <input
-                    className="w-full h-12 px-4 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all placeholder:text-slate-400 dark:text-white"
-                    placeholder="name@company.com"
-                    type="email"
-                  />
-                </label>
-                <label className="flex flex-col gap-2 md:col-span-2">
-                  <span className="text-slate-900  text-sm font-semibold">
-                    Topic
-                  </span>
-                  <select className="w-full h-12 px-4 rounded-lg bg-slate-50 dark:bg-slate-800 border-slate-300 border  dark:border-slate-600 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-slate-700 dark:text-white appearance-none cursor-pointer ">
-                    <option disabled="" selected="" value="">
-                      Select a topic
-                    </option>
 
-                    <option>Product Information</option>
-                    <option>Collaboration Proposal</option>
-                    <option>Technical Support</option>
-                    <option>General Inquiry</option>
-                  </select>
-                </label>
-                <label className="flex flex-col gap-2 md:col-span-2">
-                  <span className="text-slate-900 text-sm font-semibold">
-                    Message
-                  </span>
-                  <textarea
-                    className="w-full p-4 rounded-lg bg-slate-50  border dark:bg-slate-800 border-slate-300 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all placeholder:text-slate-400 resize-none dark:text-white"
-                    placeholder="How can we help you?"
-                    rows="4"
-                  ></textarea>
-                </label>
-              </div>
-              <div className="flex items-center justify-between mt-4">
-                <div className="hidden md:flex items-center gap-2 text-slate-500 dark:text-slate-900 text-sm">
-                  <span className="material-symbols-outlined text-lg text-green-600">
-                    <MdOutlineVerified />
-                  </span>
-                  <span>Your information is secure</span>
+                  <div>
+                    <label
+                      htmlFor="company"
+                      className="block text-sm font-semibold text-slate-700 dark:text-slate-300"
+                    >
+                      Company Name
+                    </label>
+                    <input
+                      id="company"
+                      name="company"
+                      type="text"
+                      autoComplete="organization"
+                      value={formData.company}
+                      onChange={handleChange}
+                      className="mt-1.5 block w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-slate-900 placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:border-slate-600 dark:bg-slate-800 dark:text-white dark:placeholder-slate-500"
+                    />
+                  </div>
                 </div>
-                <button
-                  className="bg-primary hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:shadow-lg transition-all transform active:scale-95 w-full md:w-auto"
-                  type="button"
-                >
-                  Send Message
-                </button>
-              </div>
-            </form>
-          </div>
-          <div className="lg:col-span-5 xl:col-span-4 flex flex-col gap-8">
-            <div className="bg-white dark:bg-[#1a2634] rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
-              <div className="p-6 md:p-8 flex flex-col gap-8">
+
                 <div>
-                  <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-6">
-                    Contact Details
-                  </h3>
-                  <div className="flex flex-col gap-6">
-                    <div className="flex gap-4">
-                      <div className="shrink-0 w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-                        <span className="material-symbols-outlined">
-                          <IoStorefront />
-                        </span>
-                      </div>
-                      <div>
-                        <h4 className="text-sm font-bold text-slate-900 dark:text-white mb-1">
-                          Office Address
-                        </h4>
-                        <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
-                          Plot No. 298, 3rd Floor, Sector 10A,
-                          <br />
-                          Gurugram, Haryana - 122001, India
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex gap-4">
-                      <div className="shrink-0 w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-                        <span className="material-symbols-outlined">
-                          <FaPhoneAlt />
-                        </span>
-                      </div>
-                      <div>
-                        <h4 className="text-sm font-bold text-slate-900 dark:text-white mb-1">
-                          Phone
-                        </h4>
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-semibold text-slate-700 dark:text-slate-300"
+                  >
+                    Work Email *
+                  </label>
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    autoComplete="email"
+                    required
+                    value={formData.email}
+                    onChange={handleChange}
+                    className="mt-1.5 block w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-slate-900 placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:border-slate-600 dark:bg-slate-800 dark:text-white dark:placeholder-slate-500"
+                  />
+                </div>
+
+                {/* Honeypot – hidden from humans */}
+                <div className="sr-only">
+                  <label htmlFor="website">Website (leave blank)</label>
+                  <input
+                    id="website"
+                    name="website"
+                    type="text"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    value={formData.website}
+                    onChange={handleChange}
+                  />
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="interest"
+                    className="block text-sm font-semibold text-slate-700 dark:text-slate-300"
+                  >
+                    I'm Interested In *
+                  </label>
+                  <select
+                    id="interest"
+                    name="interest"
+                    required
+                    value={formData.interest}
+                    onChange={handleChange}
+                    className="mt-1.5 block w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-slate-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:border-slate-600 dark:bg-slate-800 dark:text-white"
+                  >
+                    <option value="">Select an option</option>
+                    <option value="Industrial Castors">Industrial Castors</option>
+                    <option value="Medical Castors">Medical / Hospital Castors</option>
+                    <option value="Furniture Castors">Furniture & Office Castors</option>
+                    <option value="Custom Solutions">Custom / Special Solutions</option>
+                    <option value="Other Inquiry">General / Other Inquiry</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="message"
+                    className="block text-sm font-semibold text-slate-700 dark:text-slate-300"
+                  >
+                    Your Requirements / Message
+                  </label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    rows={5}
+                    value={formData.message}
+                    onChange={handleChange}
+                    placeholder="Load capacity • Environment • Quantity • Special requirements..."
+                    className="mt-1.5 block w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-slate-900 placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:border-slate-600 dark:bg-slate-800 dark:text-white dark:placeholder-slate-500"
+                  />
+                </div>
+
+                {/* Feedback area */}
+                {status !== "idle" && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className={`flex items-center gap-3 rounded-lg p-4 text-sm font-medium ${
+                      status === "success"
+                        ? "bg-green-50 text-green-800 dark:bg-green-950/40 dark:text-green-300"
+                        : status === "error"
+                        ? "bg-red-50 text-red-800 dark:bg-red-950/40 dark:text-red-300"
+                        : "bg-blue-50 text-blue-800 dark:bg-blue-950/40 dark:text-blue-300"
+                    }`}
+                  >
+                    {status === "loading" && (
+                      <div className="h-5 w-5 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                    )}
+                    {status === "success" && <IoCheckmarkCircleOutline className="text-xl" />}
+                    {status === "error" && <IoAlertCircleOutline className="text-xl" />}
+                    <span>
+                      {status === "loading" && "Sending your message..."}
+                      {status === "success" &&
+                        "Thank you! We'll get back to you within 1–2 business days."}
+                      {status === "error" && (errorMsg || "Failed to send — please try again.")}
+                    </span>
+                  </motion.div>
+                )}
+
+                <button
+                  type="submit"
+                  disabled={status === "loading"}
+                  className={`
+                    flex w-full items-center justify-center rounded-lg px-8 py-4 text-lg font-semibold text-white shadow-lg transition-all
+                    ${
+                      status === "loading"
+                        ? "cursor-not-allowed bg-slate-500"
+                        : "bg-slate-900 hover:bg-slate-800 active:scale-[0.98] dark:bg-slate-800 dark:hover:bg-slate-700"
+                    }
+                  `}
+                >
+                  {status === "loading" ? "Sending..." : "Submit Inquiry"}
+                </button>
+              </form>
+
+              <div className="mt-6 flex items-center justify-center gap-2 text-sm text-slate-500 dark:text-slate-400">
+                <MdOutlineVerified className="text-green-600" />
+                Your data is secure — we never share it.
+              </div>
+            </div>
+          </div>
+
+          {/* ─── Contact Info + Map Side ────────────────────────── */}
+          <div className="lg:col-span-5 xl:col-span-4 space-y-8">
+            <div className="overflow-hidden rounded-2xl bg-white shadow-xl ring-1 ring-slate-200/70 dark:bg-slate-900 dark:ring-slate-700/50">
+              <div className="p-8">
+                <h3 className="text-2xl font-bold text-slate-900 dark:text-white">
+                  Get in Touch
+                </h3>
+
+                <div className="mt-8 space-y-7">
+                  <ContactItem
+                    icon={<IoStorefrontOutline className="text-2xl" />}
+                    title="Office"
+                    content={
+                      <>
+                        Plot No. 298, 3rd Floor, Sector 10A
+                        <br />
+                        Gurugram, Haryana - 122001, India
+                      </>
+                    }
+                  />
+
+                  <ContactItem
+                    icon={<FaPhoneAlt className="text-xl" />}
+                    title="Phone"
+                    content={
+                      <a
+                        href="tel:+918826883046"
+                        className="hover:text-blue-600 dark:hover:text-blue-400"
+                      >
+                        +91 88268 83046
+                      </a>
+                    }
+                  />
+
+                  <ContactItem
+                    icon={<IoMailOutline className="text-2xl" />}
+                    title="Email"
+                    content={
+                      <>
                         <a
-                          className="block text-slate-600 dark:text-slate-400 text-sm hover:text-primary transition-colors"
-                          href="tel:+919800000000"
-                        >
-                          +91 8826883046
-                        </a>
-                      </div>
-                    </div>
-                    <div className="flex gap-4">
-                      <div className="shrink-0 w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-                        <span className="material-symbols-outlined">
-                          <CiMail />
-                        </span>
-                      </div>
-                      <div>
-                        <h4 className="text-sm font-bold text-slate-900 dark:text-white mb-1">
-                          Email
-                        </h4>
-                        <a
-                          className="block text-slate-600 dark:text-slate-400 text-sm hover:text-primary transition-colors"
                           href="mailto:sales@castorglobal.com"
+                          className="hover:text-blue-600 dark:hover:text-blue-400"
                         >
                           sales@castorglobal.com
                         </a>
+                        <br />
                         <a
-                          className="block text-slate-600 dark:text-slate-400 text-sm hover:text-primary transition-colors"
                           href="mailto:info@castorglobal.com"
+                          className="hover:text-blue-600 dark:hover:text-blue-400"
                         >
                           info@castorglobal.com
                         </a>
-                      </div>
-                    </div>
-                    <div className="flex gap-4">
-                      <div className="shrink-0 w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-                        <span className="material-symbols-outlined">
-                          <MdOutlineSchedule />
-                        </span>
-                      </div>
-                      <div>
-                        <h4 className="text-sm font-bold text-slate-900 dark:text-white mb-1">
-                          Office Hours
-                        </h4>
-                        <p className="text-slate-600 dark:text-slate-400 text-sm">
-                          Mon - Sat : 9:00 AM - 6:00 PM
-                        </p>
-                        <p className="text-slate-600 dark:text-slate-400 text-sm">
-                          Sunday <span className="ml-4">: Closed</span>
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="pt-6 border-t border-slate-100 dark:border-slate-700">
-                  <h4 className="text-sm font-bold text-slate-900 dark:text-white mb-4">
-                    Social Media
-                  </h4>
-                  <div className="flex gap-4">
-                    <a
-                      className="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-400 hover:bg-primary hover:text-white transition-all"
-                      href="#"
-                    >
-                      <svg
-                        aria-hidden="true"
-                        className="w-5 h-5"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          clip-rule="evenodd"
-                          d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"
-                          fill-rule="evenodd"
-                        ></path>
-                      </svg>
-                    </a>
-                    <a
-                      className="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-400 hover:bg-primary hover:text-white transition-all"
-                      href="#"
-                    >
-                      <svg
-                        aria-hidden="true"
-                        className="w-5 h-5"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          clip-rule="evenodd"
-                          d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772 4.902 4.902 0 011.772-1.153c.636-.247 1.363-.416 2.427-.465C9.673 2.013 10.03 2 12.48 2h-.165zm-3.77 4.933c-2.12 1.543-3.156 4.192-2.726 7.072.486 3.255 3.167 5.768 6.435 6.033 4.545.368 8.164-3.21 8.164-7.462 0-2.126-1.077-4.11-2.94-5.46-2.12-1.543-5.06-1.785-7.433-.618-.466.228-.795.534-.5.435zm2.747 1.838c.683-.398 1.48-.56 2.277-.478 2.043.21 3.654 1.854 3.824 3.902.164 1.98-.948 3.79-2.748 4.475-1.928.734-4.066-.3-4.823-2.16-.547-1.343-.27-2.873.712-3.996.223-.255.49-.49.758-.743z"
-                          fill-rule="evenodd"
-                        ></path>
-                      </svg>
-                    </a>
-                    <a
-                      className="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-400 hover:bg-primary hover:text-white transition-all"
-                      href="#"
-                    >
-                      <svg
-                        aria-hidden="true"
-                        className="w-5 h-5"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          clip-rule="evenodd"
-                          d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"
-                          fill-rule="evenodd"
-                        ></path>
-                      </svg>
-                    </a>
-                  </div>
+                      </>
+                    }
+                  />
+
+                  <ContactItem
+                    icon={<IoTimeOutline className="text-2xl" />}
+                    title="Hours"
+                    content={
+                      <>
+                        Mon–Sat: 9:00 AM – 6:00 PM
+                        <br />
+                        Sunday: Closed
+                      </>
+                    }
+                  />
                 </div>
               </div>
-              <div className="h-64 w-full bg-slate-200 dark:bg-slate-700 relative group overflow-hidden cursor-pointer rounded-b-xl">
+
+              {/* Map placeholder – replace with real image or iframe */}
+              <div className="relative h-64 w-full bg-slate-200 dark:bg-slate-800 group">
                 <div
-                  className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
-                  data-alt="Map showing location of factory in Gurgaon, India"
-                  data-location="Gurgaon, India"
-                  style={{
-                    backgroundImage: "url('./image.png')",
-                  }}
-                  //   style="
-                  //   background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBVheQR2T6lPWXUXuvSdFa6qdP4AN_Cs7TG_snln7i5WmUPnUr6UP96hWrMybFrnMAyNZ_F7svR1U0-w16uZ9tAPPBM7CbQLVzh2NBQMVBcr6URCT1LeMIjyU8z_TCBp3KNeAh69zwVXtx7M6WnM4bf2qjEcg4xYnb919L1YVELza2nPiB2iZFFVQ-w_u5muI87QHAyEiIAhE52FYlRIfv2m_qUSKhxH1M-C3zvbzFcVxQ_Q6kVJrLkR982XVqINsGbGad6uup83CFD');
-                  // "
-                ></div>
-                <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+                  className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+                  style={{ backgroundImage: "url('/image.png')" }} // or real static map
+                />
+                <div className="absolute inset-0 flex items-center justify-center bg-black/20 opacity-0 transition-opacity group-hover:opacity-100">
                   <a
                     href="https://maps.app.goo.gl/FPmrcx5HvcMzmBH1A"
-                    className="bg-white/90 backdrop-blur-sm text-slate-900 px-4 py-2 rounded-full font-bold text-sm shadow-lg flex items-center gap-2"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 rounded-full bg-white/90 px-6 py-3 font-semibold text-slate-900 shadow-lg backdrop-blur-sm hover:bg-white"
                   >
-                    <span className="material-symbols-outlined text-primary text-sm">
-                      <MdOpenInNew />
-                    </span>
-                    View on Google Maps
+                    View on Google Maps <MdOpenInNew />
                   </a>
                 </div>
               </div>
             </div>
+
+            {/* Optional: small trust signals / next steps */}
+            <div className="rounded-xl bg-blue-50 p-6 text-center text-sm dark:bg-blue-950/30">
+              <p className="font-medium text-blue-800 dark:text-blue-300">
+                Need urgent help? Call us directly — we're here Mon–Sat.
+              </p>
+            </div>
           </div>
         </div>
-      </main>
+      </div>
     </section>
+  );
+}
+
+function ContactItem({
+  icon,
+  title,
+  content,
+}) {
+  return (
+    <div className="flex gap-4">
+      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-400">
+        {icon}
+      </div>
+      <div>
+        <h4 className="text-sm font-semibold text-slate-900 dark:text-slate-200">{title}</h4>
+        <div className="mt-1 text-sm text-slate-600 dark:text-slate-400">{content}</div>
+      </div>
+    </div>
   );
 }

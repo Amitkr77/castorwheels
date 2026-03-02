@@ -36,7 +36,7 @@ export default function App() {
           <Route path="/about" element={<About />} />
           <Route path="/request-info" element={<Form />} />
           <Route path="/solution" element={<Solution />} />
-          <Route path="/Solution/:slug" element={<ProductDetail />} />
+          <Route path="/solution/:slug" element={<ProductDetail />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route path="/terms" element={<TermsAndConditions />} />
           <Route path="/what-we-do" element={<WhatWeDo />} />

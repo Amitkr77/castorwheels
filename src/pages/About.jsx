@@ -353,7 +353,7 @@ export default function About() {
                 },
                 {
                   year: "2025",
-                  title: "Expansion to Bihar",
+                  title: "Expansion to Haryana ",
                   desc: "Inaugurated a 50,000 sq. ft. fully automated manufacturing facility.",
                   color: "teal",
                 },
@@ -446,15 +446,16 @@ export default function About() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8">
             {[
               {
-                name: "Pradeep Kumar",
-                role: "Founder & CEO",
-                img: "./leaders/pradeep_kumar.jpeg",
-              },
-              {
                 name: "Dharmapal Singh",
-                role: "Co-founder & Managing Director",
+                role: " Founder & CEO",
                 img: "./leaders/Dharampal_singh.png",
               },
+              {
+                name: "Pradeep Kumar",
+                role: "Co-founder & Managing Director",
+                img: "./leaders/pradeep_kumar.jpeg",
+              },
+              
 
               {
                 name: "Seema Verma",

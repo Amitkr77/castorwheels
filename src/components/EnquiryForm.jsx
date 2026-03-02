@@ -7,8 +7,7 @@ import { AiOutlineGlobal } from "react-icons/ai";
 import { FaRecycle } from "react-icons/fa";
 import { RiCustomerService2Fill } from "react-icons/ri";
 
-const SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbxYlm9XxT4sHvBjzqoXO5QtABq25v53Bfwk3Wjox8MqngjSjBIjgcrf7rnYnLDLCYAU/exec";
+const SCRIPT_URL = "https://caster-backend.onrender.com/api/enquiry";
 
 export default function EnquiryForm() {
   const [formData, setFormData] = useState({
@@ -40,6 +39,7 @@ export default function EnquiryForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const validationError = validateForm();
     if (validationError) {
       setStatus("error");
@@ -51,22 +51,20 @@ export default function EnquiryForm() {
     setErrorMsg("");
 
     try {
-      // Use URLSearchParams to avoid JSON + CORS preflight issues
-      const params = new URLSearchParams();
-      Object.entries(formData).forEach(([key, value]) => {
-        params.append(key, value);
-      });
-
       const response = await fetch(SCRIPT_URL, {
         method: "POST",
-        mode: "no-cors", // Important for GAS
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
+          "Content-Type": "application/json",
         },
-        body: params.toString(),
+        body: JSON.stringify(formData), // ✅ send JSON
       });
 
-      // With no-cors we can't read response, but successful submission usually works
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed");
+      }
+
       setStatus("success");
       setFormData({
         name: "",
@@ -86,7 +84,7 @@ export default function EnquiryForm() {
 
   return (
     <section
-      className="py-16 md:py-20 bg-gradient-to-b from-slate-50 to-white"
+      className="py-16 md:py-20 bg-linear-to-b from-slate-50 to-white"
       id="enquiry"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -100,7 +98,7 @@ export default function EnquiryForm() {
               backgroundPosition: "center",
             }}
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/60 to-black/40" />
+            <div className="absolute inset-0 bg-linear-to-r from-black/70 via-black/60 to-black/40" />
 
             <div className="relative z-10 max-w-lg">
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight mb-6">
