@@ -6,7 +6,7 @@ export const medicalCaster = [
         slug: "medsure-pa-100",
         category: "medical-healthcare",
         badge: "top-seller",
-        image: "",
+        image: "/assets/medical/MedSure PA 100.png",
         wheel_material: "Polyamide (PA)",
         wheel_diameter_mm: 100,
         tread_width_mm: 32,
@@ -26,7 +26,7 @@ export const medicalCaster = [
         slug: "medsure-pa-125",
         category: "medical-healthcare",
         badge: "new",
-        image: "",
+        image: "/assets/medical/MedSure PA 125.png",
         wheel_material: "Polyamide (PA)",
         wheel_diameter_mm: 125,
         tread_width_mm: 32,
@@ -46,7 +46,7 @@ export const medicalCaster = [
         slug: "medsure-pa-150",
         category: "medical-healthcare",
         badge: "new",
-        image: "",
+        image: "/assets/medical/MedSure PA 150.png",
         wheel_material: "Polyamide (PA)",
         wheel_diameter_mm: 150,
         tread_width_mm: 40,
@@ -67,7 +67,7 @@ export const medicalCaster = [
         slug: "medsure-pu-100",
         category: "medical-healthcare",
         badge: "top-seller",
-        image: "",
+        image: "/assets/medical/MedSure PU 100.png",
         wheel_material: "Polyurethane (PU)",
         wheel_diameter_mm: 100,
         tread_width_mm: 30,
@@ -87,7 +87,7 @@ export const medicalCaster = [
         slug: "medsure-pu-125",
         category: "medical-healthcare",
         badge: "new",
-        image: "",
+        image: "/assets/medical/MedSure PU 125.png",
         wheel_material: "Polyurethane (PU)",
         wheel_diameter_mm: 125,
         tread_width_mm: 32,
@@ -107,7 +107,7 @@ export const medicalCaster = [
         slug: "medsure-pu-150",
         category: "medical-healthcare",
         badge: "new",
-        image: "",
+        image: "/assets/medical/MedSure PU 150.png",
         wheel_material: "Polyurethane (PU)",
         wheel_diameter_mm: 150,
         tread_width_mm: 40,
@@ -128,7 +128,7 @@ export const medicalCaster = [
         slug: "caremove-twin-75",
         category: "medical-healthcare",
         badge: "top-seller",
-        image: "",
+        image: "/assets/medical/MedSure PA 150.png",
         wheel_material: "Twin PU / TPR",
         wheel_diameter_mm: 75,
         tread_width_mm: 25,
@@ -148,7 +148,7 @@ export const medicalCaster = [
         slug: "caremove-twin-100",
         category: "medical-healthcare",
         badge: "new",
-        image: "",
+        image: "/assets/medical/MedSure PA 150.png",
         wheel_material: "Twin PU / TPR",
         wheel_diameter_mm: 100,
         tread_width_mm: 25,
@@ -169,7 +169,7 @@ export const medicalCaster = [
         slug: "safelock-100",
         category: "medical-healthcare",
         badge: "top-seller",
-        image: "",
+        image: "/assets/medical/MedSure PA 150.png",
         wheel_material: "Polyurethane (PU)",
         wheel_diameter_mm: 100,
         tread_width_mm: 32,
@@ -189,7 +189,7 @@ export const medicalCaster = [
         slug: "safelock-125",
         category: "medical-healthcare",
         badge: "new",
-        image: "",
+        image: "/assets/medical/MedSure PA 150.png",
         wheel_material: "Polyurethane (PU)",
         wheel_diameter_mm: 125,
         tread_width_mm: 40,
@@ -210,7 +210,7 @@ export const medicalCaster = [
         slug: "cleanroll-ss-100",
         category: "medical-healthcare",
         badge: "top-seller",
-        image: "",
+        image: "/assets/medical/MedSure PA 150.png",
         wheel_material: "PU + Stainless Steel",
         wheel_diameter_mm: 100,
         tread_width_mm: 32,
@@ -224,26 +224,26 @@ export const medicalCaster = [
             "Hygienic design with minimal dirt accumulation"
         ]
     },
-    {
-        code: "CR-SS-125",
-        name: "CleanRoll SS 125",
-        slug: "cleanroll-ss-125",
-        category: "medical-healthcare",
-        badge: "new",
-        image: "",
-        wheel_material: "PU + Stainless Steel",
-        wheel_diameter_mm: 125,
-        tread_width_mm: 40,
-        height_mm: 155,
-        load_capacity_kg: 150,
-        approx_weight_kg: 2.8,
-        ideal_for: "Cleanrooms, laboratories, pharmaceutical environments",
-        key_features: [
-            "Corrosion-resistant stainless steel construction",
-            "Compatible with frequent washing and sterilization",
-            "Hygienic design with minimal dirt accumulation"
-        ]
-    },
+    // {
+    //     code: "CR-SS-125",
+    //     name: "CleanRoll SS 125",
+    //     slug: "cleanroll-ss-125",
+    //     category: "medical-healthcare",
+    //     badge: "new",
+    //     image: "",
+    //     wheel_material: "PU + Stainless Steel",
+    //     wheel_diameter_mm: 125,
+    //     tread_width_mm: 40,
+    //     height_mm: 155,
+    //     load_capacity_kg: 150,
+    //     approx_weight_kg: 2.8,
+    //     ideal_for: "Cleanrooms, laboratories, pharmaceutical environments",
+    //     key_features: [
+    //         "Corrosion-resistant stainless steel construction",
+    //         "Compatible with frequent washing and sterilization",
+    //         "Hygienic design with minimal dirt accumulation"
+    //     ]
+    // },
 
     {
         code: "ESD-100",
@@ -251,7 +251,7 @@ export const medicalCaster = [
         slug: "esd-care-100",
         category: "medical-healthcare",
         badge: "top-seller",
-        image: "",
+        image: "/assets/medical/MedSure PA 150.png",
         wheel_material: "Conductive Polyurethane (ESD-safe)",
         wheel_diameter_mm: 100,
         tread_width_mm: 32,
@@ -265,26 +265,26 @@ export const medicalCaster = [
             "Smooth, controlled mobility"
         ]
     },
-    {
-        code: "ESD-125",
-        name: "ESD-Care 125",
-        slug: "esd-care-125",
-        category: "medical-healthcare",
-        badge: "new",
-        image: "",
-        wheel_material: "Conductive Polyurethane (ESD-safe)",
-        wheel_diameter_mm: 125,
-        tread_width_mm: 40,
-        height_mm: 155,
-        load_capacity_kg: 120,
-        approx_weight_kg: 2.3,
-        ideal_for: "Imaging equipment, diagnostic electronics",
-        key_features: [
-            "Prevents electrostatic discharge",
-            "Protects sensitive medical electronics",
-            "Smooth, controlled mobility"
-        ]
-    },
+    // {
+    //     code: "ESD-125",
+    //     name: "ESD-Care 125",
+    //     slug: "esd-care-125",
+    //     category: "medical-healthcare",
+    //     badge: "new",
+    //     image: "",
+    //     wheel_material: "Conductive Polyurethane (ESD-safe)",
+    //     wheel_diameter_mm: 125,
+    //     tread_width_mm: 40,
+    //     height_mm: 155,
+    //     load_capacity_kg: 120,
+    //     approx_weight_kg: 2.3,
+    //     ideal_for: "Imaging equipment, diagnostic electronics",
+    //     key_features: [
+    //         "Prevents electrostatic discharge",
+    //         "Protects sensitive medical electronics",
+    //         "Smooth, controlled mobility"
+    //     ]
+    // },
 
     {
         code: "UQ-100",
@@ -292,7 +292,7 @@ export const medicalCaster = [
         slug: "ultraquiet-100",
         category: "medical-healthcare",
         badge: "top-seller",
-        image: "",
+        image: "/assets/medical/MedSure PA 150.png",
         wheel_material: "PU with noise-dampening core",
         wheel_diameter_mm: 100,
         tread_width_mm: 32,
@@ -304,67 +304,6 @@ export const medicalCaster = [
             "Ultra-low noise rolling performance",
             "Enhanced patient comfort",
             "Stable and controlled movement"
-        ]
-    },
-    {
-        code: "UQ-125",
-        name: "UltraQuiet 125",
-        slug: "ultraquiet-125",
-        category: "medical-healthcare",
-        badge: "new",
-        image: "",
-        wheel_material: "PU with noise-dampening core",
-        wheel_diameter_mm: 125,
-        tread_width_mm: 40,
-        height_mm: 155,
-        load_capacity_kg: 120,
-        approx_weight_kg: 2.2,
-        ideal_for: "Patient wards, recovery rooms",
-        key_features: [
-            "Ultra-low noise rolling performance",
-            "Enhanced patient comfort",
-            "Stable and controlled movement"
-        ]
-    },
-
-    {
-        code: "CF-75",
-        name: "CareFlex Compact 75",
-        slug: "careflex-compact-75",
-        category: "medical-healthcare",
-        badge: "new",
-        image: "",
-        wheel_material: "Polyamide / PU",
-        wheel_diameter_mm: 75,
-        tread_width_mm: 25,
-        height_mm: 95,
-        load_capacity_kg: 60,
-        approx_weight_kg: 1.0,
-        ideal_for: "Lightweight medical equipment and accessories",
-        key_features: [
-            "Compact design for tight spaces",
-            "Lightweight yet durable construction",
-            "Smooth swivel performance"
-        ]
-    },
-    {
-        code: "CF-100",
-        name: "CareFlex Compact 100",
-        slug: "careflex-compact-100",
-        category: "medical-healthcare",
-        badge: "new",
-        image: "",
-        wheel_material: "Polyamide / PU",
-        wheel_diameter_mm: 100,
-        tread_width_mm: 30,
-        height_mm: 120,
-        load_capacity_kg: 90,
-        approx_weight_kg: 1.3,
-        ideal_for: "Lightweight medical equipment and accessories",
-        key_features: [
-            "Compact design for tight spaces",
-            "Lightweight yet durable construction",
-            "Smooth swivel performance"
         ]
     }
 ];

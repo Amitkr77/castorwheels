@@ -438,7 +438,7 @@ export default function AutomotiveCastor() {
                     <img
                       src={selectedProduct.image}
                       alt={selectedProduct.name}
-                      className="max-h-full max-w-full object-contain"
+                      className="max-h-full max-w-full object-cover"
                       loading="lazy"
                     />
                   ) : (

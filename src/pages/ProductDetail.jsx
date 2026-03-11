@@ -25,7 +25,7 @@ export default function ProductDetail() {
           <img
             src={product.media.mainImage}
             alt={product.name}
-            className="w-full object-contain"
+            className="w-full object-cover"
           />
         </div>
 

@@ -5,7 +5,7 @@ export const furnitureCasters = [
         slug: "softmove-50",
         category: "furniture-casters",
         badge: "top-seller",
-        image: "",
+        image: "/assets/furniture/FloorGuard 50.jpg",
         wheel_material: "TPR / Soft Polyurethane (PU)",
         wheel_diameter_mm: 50,
         tread_width_mm: 18,
@@ -26,7 +26,7 @@ export const furnitureCasters = [
         slug: "softmove-65",
         category: "furniture-casters",
         badge: "new",
-        image: "",
+        image: "/assets/furniture/SoftMove 50.png",
         wheel_material: "TPR / Soft Polyurethane (PU)",
         wheel_diameter_mm: 65,
         tread_width_mm: 22,
@@ -47,7 +47,7 @@ export const furnitureCasters = [
         slug: "softmove-75",
         category: "furniture-casters",
         badge: "new",
-        image: "",
+        image: "/assets/furniture/SoftMove 65.jpeg",
         wheel_material: "TPR / Soft Polyurethane (PU)",
         wheel_diameter_mm: 75,
         tread_width_mm: 25,
@@ -69,7 +69,7 @@ export const furnitureCasters = [
         slug: "floorguard-50",
         category: "furniture-casters",
         badge: "top-seller",
-        image: "",
+        image: "/assets/furniture/SoftMove 75.jpg",
         wheel_material: "Soft Rubber",
         wheel_diameter_mm: 50,
         tread_width_mm: 20,
@@ -84,34 +84,14 @@ export const furnitureCasters = [
             "Quiet operation on smooth surfaces"
         ]
     },
-    {
-        code: "FLOORGUARD-65",
-        name: "FloorGuard 65",
-        slug: "floorguard-65",
-        category: "furniture-casters",
-        badge: "new",
-        image: "",
-        wheel_material: "Soft Rubber",
-        wheel_diameter_mm: 65,
-        tread_width_mm: 25,
-        height_mm: 85,
-        load_capacity_kg: 50,
-        approx_weight_kg: 0.40,
-        mount_type: "Stem",
-        ideal_for: "Furniture on delicate flooring (wood, marble, laminate, tiles)",
-        key_features: [
-            "Excellent floor protection",
-            "Non-marking and slip-resistant",
-            "Quiet operation on smooth surfaces"
-        ]
-    },
+
     {
         code: "FLOORGUARD-75",
         name: "FloorGuard 75",
         slug: "floorguard-75",
         category: "furniture-casters",
         badge: "new",
-        image: "",
+        image: "/assets/furniture/FloorGuard 50.jpg",
         wheel_material: "Soft Rubber",
         wheel_diameter_mm: 75,
         tread_width_mm: 30,
@@ -133,7 +113,7 @@ export const furnitureCasters = [
         slug: "twinease-40",
         category: "furniture-casters",
         badge: "top-seller",
-        image: "",
+        image: "/assets/furniture/SoftMove 75.jpg",
         wheel_material: "Polyurethane (PU) / Nylon",
         wheel_diameter_mm: 40,
         tread_width_mm: 15,
@@ -154,7 +134,7 @@ export const furnitureCasters = [
         slug: "twinease-50",
         category: "furniture-casters",
         badge: "new",
-        image: "",
+        image: "/assets/furniture/FloorGuard 50.jpg",
         wheel_material: "Polyurethane (PU) / Nylon",
         wheel_diameter_mm: 50,
         tread_width_mm: 18,
@@ -176,7 +156,7 @@ export const furnitureCasters = [
         slug: "locksafe-50",
         category: "furniture-casters",
         badge: "top-seller",
-        image: "",
+        image: "/assets/furniture/SoftMove 75.jpg",
         wheel_material: "Polyurethane (PU) / Rubber",
         wheel_diameter_mm: 50,
         tread_width_mm: 18,
@@ -197,7 +177,7 @@ export const furnitureCasters = [
         slug: "locksafe-75",
         category: "furniture-casters",
         badge: "new",
-        image: "",
+        image: "/assets/furniture/FloorGuard 50.jpg",
         wheel_material: "Polyurethane (PU) / Rubber",
         wheel_diameter_mm: 75,
         tread_width_mm: 25,
@@ -240,7 +220,7 @@ export const furnitureCasters = [
         slug: "styleline-65",
         category: "furniture-casters",
         badge: "new",
-        image: "",
+        image: "/assets/furniture/FloorGuard 50.jpg",
         wheel_material: "Polyurethane (PU) with designer housing",
         wheel_diameter_mm: 65,
         tread_width_mm: 22,
@@ -283,7 +263,7 @@ export const furnitureCasters = [
         slug: "officeroll-60",
         category: "furniture-casters",
         badge: "new",
-        image: "",
+        image: "/assets/furniture/FloorGuard 50.jpg",
         wheel_material: "Polyurethane (PU) / Nylon",
         wheel_diameter_mm: 60,
         tread_width_mm: 22,
@@ -342,51 +322,10 @@ export const furnitureCasters = [
         ]
     },
 
-    {
-        code: "SILENTGLIDE-65",
-        name: "SilentGlide 65",
-        slug: "silentglide-65",
-        category: "furniture-casters",
-        badge: "top-seller",
-        image: "",
-        wheel_material: "Noise-Dampening Polyurethane (PU)",
-        wheel_diameter_mm: 65,
-        tread_width_mm: 22,
-        height_mm: 85,
-        load_capacity_kg: 55,
-        approx_weight_kg: 0.45,
-        mount_type: "Stem / Plate",
-        ideal_for: "Residential furniture, bedrooms, quiet zones",
-        key_features: [
-            "Ultra-silent movement",
-            "Soft tread for noise and vibration reduction",
-            "Premium rolling comfort"
-        ]
-    },
-    {
-        code: "SILENTGLIDE-75",
-        name: "SilentGlide 75",
-        slug: "silentglide-75",
-        category: "furniture-casters",
-        badge: "new",
-        image: "",
-        wheel_material: "Noise-Dampening Polyurethane (PU)",
-        wheel_diameter_mm: 75,
-        tread_width_mm: 25,
-        height_mm: 100,
-        load_capacity_kg: 70,
-        approx_weight_kg: 0.60,
-        mount_type: "Stem / Plate",
-        ideal_for: "Residential furniture, bedrooms, quiet zones",
-        key_features: [
-            "Ultra-silent movement",
-            "Soft tread for noise and vibration reduction",
-            "Premium rolling comfort"
-        ]
-    }
+
 ];
 
-export const furnitureCastersContent={
+export const furnitureCastersContent = {
     title: "Furniture Castors",
     description: "Our furniture castors are designed to provide smooth mobility and protect your flooring. Ideal for residential and office furniture, these castors combine functionality with aesthetic appeal, ensuring easy movement without compromising on style."
 }

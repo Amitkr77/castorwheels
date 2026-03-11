@@ -446,7 +446,7 @@ export default function MedicalCaster() {
                     <img
                       src={selectedProduct.image}
                       alt={selectedProduct.name}
-                      className="max-h-full max-w-full object-contain"
+                      className="max-h-full max-w-full object-cover"
                       loading="lazy"
                     />
                   ) : (
