@@ -13,7 +13,7 @@ import { useSearchParams } from "react-router-dom";
 import {
   warehouseLogistics,
   warehouseLogisticsContent,
-} from "../../data/Products/Warehouse_logistic"; // adjust path as needed
+} from "../../data/Products/Warehouse_logistic"; 
 
 // ────────────────────────────────────────────────
 export default function WarehouseCastor() {
@@ -561,7 +561,7 @@ function ProductCard({ product, viewMode, onViewDetails }) {
       )}
 
       <div
-        className={`relative overflow-hidden bg-gray-50 dark:bg-slate-800 ${
+        className={`relative overflow-hidden bg-white dark:bg-slate-800 ${
           isList
             ? "h-36 w-36 shrink-0 rounded-lg"
             : "aspect-square rounded-t-xl"

@@ -148,7 +148,7 @@ export default function FurnitureCasters() {
           <div className="sticky top-24 rounded-xl bg-white dark:bg-slate-900 p-6 shadow-sm border border-gray-200 dark:border-slate-800">
             <div className="flex items-center justify-between pb-5 border-b dark:border-slate-700">
               <h3 className="font-bold text-lg text-gray-900 dark:text-white">
-                Filters
+                Filter
               </h3>
               <button
                 onClick={resetFilters}
@@ -447,7 +447,7 @@ export default function FurnitureCasters() {
                     <img
                       src={selectedProduct.image}
                       alt={selectedProduct.name}
-                      className="max-h-full max-w-full object-contain"
+                      className="max-h-full max-w-full object-cover"
                       loading="lazy"
                     />
                   ) : (
@@ -568,7 +568,7 @@ function ProductCard({ product, viewMode, onViewDetails }) {
       )}
 
       <div
-        className={`relative overflow-hidden bg-gray-50 dark:bg-slate-800 ${
+        className={`relative overflow-hidden bg-white dark:bg-slate-800 ${
           isList
             ? "h-36 w-36 shrink-0 rounded-lg"
             : "aspect-square rounded-t-xl"
