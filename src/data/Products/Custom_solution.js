@@ -34,7 +34,7 @@ export const mobilitySystems = [
             "Protects sensitive equipment during movement",
             "Reduced noise and operator fatigue"
         ],
-        customization: false
+        customization: true
     },
 
     {
@@ -72,7 +72,7 @@ export const mobilitySystems = [
             "Smooth rolling and reduced vibration",
             "Lower noise compared to metal wheels"
         ],
-        customization: false
+        customization: true
     },
 
     {
@@ -110,7 +110,7 @@ export const mobilitySystems = [
             "Compatible with cleanroom standards",
             "Corrosion-resistant construction"
         ],
-        customization: false
+        customization: true
     },
 
     {

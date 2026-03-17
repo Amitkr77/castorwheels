@@ -1,21 +1,28 @@
-import React, { useState, useMemo, useEffect, useCallback, use } from "react";
-import { IoSearchSharp } from "react-icons/io5";
+"use client";
+import React, { useState, useMemo, useEffect, useCallback } from "react";
+import {
+  IoSearchSharp,
+  IoClose,
+} from "react-icons/io5";
 import { IoMdFitness } from "react-icons/io";
+
 import {
   MdGridView,
   MdViewList,
   MdDonutLarge,
   MdOutlineChevronRight,
   MdExpandMore,
+  MdFilterList,
 } from "react-icons/md";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { useSearchParams } from "react-router-dom";
 import {
   warehouseLogistics,
   warehouseLogisticsContent,
-} from "../../data/Products/Warehouse_logistic"; 
+} from "../../data/Products/Warehouse_logistic";
 
-// ────────────────────────────────────────────────
+const ITEMS_PER_PAGE = 9;
+
 export default function WarehouseCastor() {
   const [searchParams] = useSearchParams();
   const initialSearch = searchParams.get("q") || "";
@@ -27,8 +34,7 @@ export default function WarehouseCastor() {
   const [sortBy, setSortBy] = useState("popularity");
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedProduct, setSelectedProduct] = useState(null);
-
-  const ITEMS_PER_PAGE = 9;
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
   useEffect(() => {
     setCurrentPage(1);
@@ -38,6 +44,7 @@ export default function WarehouseCastor() {
     setSelectedMaterials([]);
     setLoadRange({ min: "", max: "" });
     setSearch("");
+    setMobileFiltersOpen(false);
   }, []);
 
   const filteredAndSortedProducts = useMemo(() => {
@@ -49,14 +56,14 @@ export default function WarehouseCastor() {
       result = result.filter(
         (p) =>
           p.name.toLowerCase().includes(term) ||
-          p.code.toLowerCase().includes(term),
+          (p.code && p.code.toLowerCase().includes(term))
       );
     }
 
     // Materials filter
     if (selectedMaterials.length > 0) {
       result = result.filter((p) =>
-        selectedMaterials.some((m) => p.wheel_material.includes(m)),
+        selectedMaterials.some((m) => p.wheel_material?.includes(m))
       );
     }
 
@@ -65,7 +72,7 @@ export default function WarehouseCastor() {
     const max = loadRange.max ? Number(loadRange.max) : Infinity;
     if (Number.isFinite(min) || Number.isFinite(max)) {
       result = result.filter(
-        (p) => p.load_capacity_kg >= min && p.load_capacity_kg <= max,
+        (p) => p.load_capacity_kg >= min && p.load_capacity_kg <= max
       );
     }
 
@@ -90,9 +97,9 @@ export default function WarehouseCastor() {
     () =>
       filteredAndSortedProducts.slice(
         (currentPage - 1) * ITEMS_PER_PAGE,
-        currentPage * ITEMS_PER_PAGE,
+        currentPage * ITEMS_PER_PAGE
       ),
-    [filteredAndSortedProducts, currentPage],
+    [filteredAndSortedProducts, currentPage]
   );
 
   const goToPage = (page) => {
@@ -111,56 +118,56 @@ export default function WarehouseCastor() {
   }, [selectedProduct]);
 
   return (
-    <main className="flex flex-col min-h-screen bg-gray-50 dark:bg-slate-950">
+    <main className="flex flex-col min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-800">
+      <header className="bg-white border-b border-gray-200">
         <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-          <nav className="flex items-center gap-2 text-sm text-gray-500 dark:text-slate-400">
-            <a
-              href="#"
-              className="hover:text-blue-600 dark:hover:text-blue-400"
-            >
+          <nav className="flex items-center gap-2 text-sm text-gray-500">
+            <a href="/" className="hover:text-blue-600">
               Home
             </a>
             <MdOutlineChevronRight className="text-lg" aria-hidden="true" />
-            <span className="font-medium text-gray-900 dark:text-white">
-              Castor Catalog
-            </span>
+            <span className="font-medium text-gray-900">Castor Catalog</span>
             <MdOutlineChevronRight className="text-lg" aria-hidden="true" />
-            <span className="font-medium text-gray-900 dark:text-white">
-              Warehouse & Logistics
-            </span>
+            <span className="font-medium text-gray-900">Warehouse & Logistics</span>
           </nav>
 
-          <h1 className="mt-4 text-3xl font-black tracking-tight text-gray-900 dark:text-white sm:text-4xl">
+          <h1 className="mt-5 text-3xl font-black tracking-tight text-gray-900 sm:text-4xl">
             {warehouseLogisticsContent.title}
           </h1>
-          <p className="mt-3 text-base text-gray-600 dark:text-slate-400 max-w-3xl">
+          <p className="mt-3 text-base text-gray-600 max-w-3xl">
             {warehouseLogisticsContent.description}
           </p>
         </div>
       </header>
 
-      {/* Main Content */}
-      <div className="mx-auto w-full max-w-7xl grow px-4 py-8 sm:px-6 lg:flex lg:gap-8 lg:px-8">
-        {/* Filters Sidebar */}
-        <aside className="hidden lg:block lg:w-72 lg:shrink-0">
-          <div className="sticky top-24 rounded-xl bg-white dark:bg-slate-900 p-6 shadow-sm border border-gray-200 dark:border-slate-800">
-            <div className="flex items-center justify-between pb-5 border-b dark:border-slate-700">
-              <h3 className="font-bold text-lg text-gray-900 dark:text-white">
-                Filters
-              </h3>
+      <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:flex lg:gap-8 lg:px-8">
+        {/* Filters – mobile drawer + desktop sidebar */}
+        <aside
+          className={`fixed h-fit inset-y-0 left-0 z-40 w-80 transform bg-white shadow-xl transition-transform lg:relative lg:translate-x-0 lg:shadow-none lg:border lg:rounded-xl lg:p-6 lg:top-24 ${
+            mobileFiltersOpen ? "translate-x-0" : "-translate-x-full"
+          } lg:block lg:w-72 lg:shrink-0`}
+        >
+          <div className="flex items-center justify-between p-5 border-b lg:hidden">
+            <h3 className="font-bold text-lg text-gray-900">Filters</h3>
+            <button onClick={() => setMobileFiltersOpen(false)}>
+              <IoClose className="text-2xl text-gray-600" />
+            </button>
+          </div>
+
+          <div className="p-5 lg:p-0">
+            <div className="flex justify-between pb-5 border-b lg:hidden">
               <button
                 onClick={resetFilters}
-                className="text-sm font-medium text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+                className="text-sm font-medium text-blue-600 hover:text-blue-800"
               >
-                Clear all
+                Clear all filters
               </button>
             </div>
 
-            {/* Wheel Material – actual values from warehouseLogistics data */}
+            {/* Wheel Material */}
             <section className="mt-6">
-              <h4 className="text-sm font-bold uppercase tracking-wide text-gray-500 dark:text-slate-400 mb-3">
+              <h4 className="text-sm font-bold uppercase tracking-wide text-gray-500 mb-3">
                 Wheel Material
               </h4>
               {[
@@ -173,34 +180,27 @@ export default function WarehouseCastor() {
                 "Noise-Dampening Polyurethane",
                 "Polyurethane / Cast Iron",
               ].map((mat) => (
-                <label
-                  key={mat}
-                  className="flex items-center gap-3 py-1.5 cursor-pointer group"
-                >
+                <label key={mat} className="flex items-center gap-3 py-2 cursor-pointer group">
                   <input
                     type="checkbox"
                     checked={selectedMaterials.includes(mat)}
                     onChange={() =>
                       setSelectedMaterials((prev) =>
-                        prev.includes(mat)
-                          ? prev.filter((m) => m !== mat)
-                          : [...prev, mat],
+                        prev.includes(mat) ? prev.filter((m) => m !== mat) : [...prev, mat]
                       )
                     }
-                    className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 dark:bg-slate-800 dark:border-slate-600"
+                    className="h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                   />
-                  <span className="text-sm text-gray-700 dark:text-slate-300 group-hover:text-blue-600">
-                    {mat}
-                  </span>
+                  <span className="text-gray-700 group-hover:text-blue-600">{mat}</span>
                 </label>
               ))}
             </section>
 
-            <hr className="my-6 border-gray-200 dark:border-slate-700" />
+            <hr className="my-6 border-gray-200" />
 
             {/* Load Capacity */}
             <section>
-              <h4 className="text-sm font-bold uppercase tracking-wide text-gray-500 dark:text-slate-400 mb-3">
+              <h4 className="text-sm font-bold uppercase tracking-wide text-gray-500 mb-3">
                 Load Capacity (kg)
               </h4>
               <div className="flex items-center gap-4">
@@ -209,95 +209,89 @@ export default function WarehouseCastor() {
                   min={0}
                   placeholder="Min"
                   value={loadRange.min}
-                  onChange={(e) =>
-                    setLoadRange((p) => ({ ...p, min: e.target.value }))
-                  }
-                  className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 dark:bg-slate-800 dark:border-slate-600 dark:text-white"
+                  onChange={(e) => setLoadRange((p) => ({ ...p, min: e.target.value }))}
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 />
-                <span className="text-gray-400 dark:text-slate-500">–</span>
+                <span className="text-gray-400">–</span>
                 <input
                   type="number"
                   min={0}
                   placeholder="Max"
                   value={loadRange.max}
-                  onChange={(e) =>
-                    setLoadRange((p) => ({ ...p, max: e.target.value }))
-                  }
-                  className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 dark:bg-slate-800 dark:border-slate-600 dark:text-white"
+                  onChange={(e) => setLoadRange((p) => ({ ...p, max: e.target.value }))}
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 />
               </div>
             </section>
           </div>
         </aside>
 
+        {mobileFiltersOpen && (
+          <div
+            className="fixed inset-0 z-30 bg-black/40 lg:hidden"
+            onClick={() => setMobileFiltersOpen(false)}
+          />
+        )}
+
         {/* Products Area */}
         <div className="flex-1 flex flex-col gap-6">
-          {/* Search */}
-          <div className="relative">
-            <IoSearchSharp
-              className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 dark:text-slate-500 text-xl pointer-events-none"
-              aria-hidden="true"
-            />
-            <input
-              type="search"
-              placeholder="Search by name or code..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="w-full rounded-xl border border-gray-200 bg-white pl-11 pr-4 py-3 text-gray-900 placeholder-gray-500 shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 dark:bg-slate-900 dark:border-slate-700 dark:text-white dark:placeholder-slate-500"
-            />
-          </div>
+          {/* Controls Bar */}
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => setMobileFiltersOpen(true)}
+                className="lg:hidden flex items-center gap-2 px-4 py-2.5 bg-white border border-gray-300 rounded-lg text-sm font-medium hover:bg-gray-50"
+              >
+                <MdFilterList className="text-lg" />
+                Filters
+              </button>
 
-          {/* Controls */}
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b pb-6 dark:border-slate-700">
-            <p className="text-sm text-gray-600 dark:text-slate-400">
-              Showing{" "}
-              <strong className="text-gray-900 dark:text-white">
-                {startItem}–{endItem}
-              </strong>{" "}
-              of{" "}
-              <strong className="text-gray-900 dark:text-white">
-                {totalItems}
-              </strong>{" "}
-              products
-            </p>
+              <div className="relative flex-1">
+                <IoSearchSharp className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl pointer-events-none" />
+                <input
+                  type="search"
+                  placeholder="Search by name or code..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  className="w-full rounded-xl border border-gray-200 bg-white pl-11 pr-4 py-3 text-gray-900 placeholder-gray-500 shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                />
+              </div>
+            </div>
 
             <div className="flex flex-wrap items-center gap-5">
               <div className="flex items-center gap-2">
-                <label className="text-sm text-gray-600 dark:text-slate-400 whitespace-nowrap">
-                  Sort by
-                </label>
+                <label className="text-sm text-gray-600 whitespace-nowrap">Sort by</label>
                 <div className="relative inline-block">
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value)}
-                    className="appearance-none rounded-lg bg-white py-2 pl-3 pr-9 text-sm font-medium text-gray-900 border border-gray-200 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 dark:bg-slate-900 dark:text-white dark:border-slate-700"
+                    className="appearance-none rounded-lg bg-white py-2 pl-3 pr-9 text-sm font-medium border border-gray-200 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                   >
                     <option value="popularity">Popularity</option>
                     <option value="name-asc">Name A–Z</option>
                     <option value="name-desc">Name Z–A</option>
                     <option value="load-desc">Load High to Low</option>
                   </select>
-                  <MdExpandMore
-                    className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none"
-                    aria-hidden="true"
-                  />
+                  <MdExpandMore className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" />
                 </div>
               </div>
 
-              <div className="flex rounded-lg bg-gray-100 p-1 dark:bg-slate-800">
+              <div className="flex rounded-lg bg-gray-100 p-1">
                 <button
-                  type="button"
                   onClick={() => setViewMode("grid")}
+                  className={`rounded p-2.5 transition-colors ${
+                    viewMode === "grid" ? "bg-white shadow" : "hover:bg-gray-200"
+                  }`}
                   aria-label="Grid view"
-                  className={`rounded p-2.5 transition-colors ${viewMode === "grid" ? "bg-white shadow dark:bg-slate-700" : "hover:bg-gray-200 dark:hover:bg-slate-700"}`}
                 >
                   <MdGridView className="text-xl" />
                 </button>
                 <button
-                  type="button"
                   onClick={() => setViewMode("list")}
+                  className={`rounded p-2.5 transition-colors ${
+                    viewMode === "list" ? "bg-white shadow" : "hover:bg-gray-200"
+                  }`}
                   aria-label="List view"
-                  className={`rounded p-2.5 transition-colors ${viewMode === "list" ? "bg-white shadow dark:bg-slate-700" : "hover:bg-gray-200 dark:hover:bg-slate-700"}`}
                 >
                   <MdViewList className="text-xl" />
                 </button>
@@ -305,13 +299,17 @@ export default function WarehouseCastor() {
             </div>
           </div>
 
-          {/* Products */}
+          <p className="text-sm text-gray-600">
+            Showing <strong className="text-gray-900">{startItem}–{endItem}</strong> of{" "}
+            <strong className="text-gray-900">{totalItems}</strong> warehouse & logistics castors
+          </p>
+
           {totalItems === 0 ? (
-            <div className="py-16 text-center text-gray-500 dark:text-slate-400">
-              No warehouse & logistics castors match your current filters.
+            <div className="py-20 text-center text-gray-500">
+              No warehouse & logistics castors match your filters.
               <button
                 onClick={resetFilters}
-                className="ml-2 text-blue-600 hover:underline dark:text-blue-400"
+                className="ml-2 text-blue-600 hover:underline font-medium"
               >
                 Clear filters
               </button>
@@ -320,13 +318,13 @@ export default function WarehouseCastor() {
             <div
               className={
                 viewMode === "grid"
-                  ? "grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:gap-8"
+                  ? "grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
                   : "flex flex-col gap-5"
               }
             >
               {paginatedProducts.map((product) => (
                 <ProductCard
-                  key={product.code}
+                  key={product.code || product.name}
                   product={product}
                   viewMode={viewMode}
                   onViewDetails={() => setSelectedProduct(product)}
@@ -335,58 +333,44 @@ export default function WarehouseCastor() {
             </div>
           )}
 
-          {/* Pagination */}
           {totalPages > 1 && (
-            <nav
-              aria-label="Pagination"
-              className="mt-10 flex items-center justify-center gap-2 flex-wrap"
-            >
+            <nav aria-label="Pagination" className="mt-12 flex justify-center gap-2 flex-wrap">
               <button
                 onClick={() => goToPage(currentPage - 1)}
                 disabled={currentPage === 1}
-                aria-label="Previous page"
-                className="flex h-10 w-10 items-center justify-center rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-40 disabled:pointer-events-none dark:border-slate-700 dark:text-slate-400 dark:hover:bg-slate-800"
+                className="flex h-10 w-10 items-center justify-center rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-40"
               >
                 <FaChevronLeft className="text-sm" />
               </button>
 
               {Array.from({ length: totalPages }, (_, i) => i + 1)
                 .filter(
-                  (page) =>
-                    page === 1 ||
-                    page === totalPages ||
-                    (page >= currentPage - 2 && page <= currentPage + 2),
+                  (p) =>
+                    p === 1 ||
+                    p === totalPages ||
+                    (p >= currentPage - 2 && p <= currentPage + 2)
                 )
                 .map((page, idx, arr) => {
-                  const showEllipsisBefore =
-                    idx > 0 && arr[idx - 1] !== page - 1 && page !== 1;
-                  const showEllipsisAfter =
-                    idx < arr.length - 1 &&
-                    arr[idx + 1] !== page + 1 &&
-                    page !== totalPages;
+                  const showBefore = idx > 0 && arr[idx - 1] !== page - 1;
+                  const showAfter = idx < arr.length - 1 && arr[idx + 1] !== page + 1;
 
                   return (
                     <React.Fragment key={page}>
-                      {showEllipsisBefore && (
-                        <span className="flex h-10 w-10 items-center justify-center text-gray-400">
-                          …
-                        </span>
+                      {showBefore && (
+                        <span className="flex h-10 w-10 items-center justify-center text-gray-400">…</span>
                       )}
                       <button
                         onClick={() => goToPage(page)}
-                        aria-label={`Page ${page}`}
-                        className={`flex h-10 w-10 items-center justify-center rounded-lg border text-sm font-medium transition-colors ${
+                        className={`flex h-10 w-10 items-center justify-center rounded-lg border text-sm font-medium ${
                           page === currentPage
-                            ? "border-blue-600 bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:border-blue-500 dark:text-blue-400"
-                            : "border-gray-200 text-gray-700 hover:bg-gray-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
+                            ? "border-blue-600 bg-blue-50 text-blue-600"
+                            : "border-gray-200 text-gray-700 hover:bg-gray-50"
                         }`}
                       >
                         {page}
                       </button>
-                      {showEllipsisAfter && (
-                        <span className="flex h-10 w-10 items-center justify-center text-gray-400">
-                          …
-                        </span>
+                      {showAfter && (
+                        <span className="flex h-10 w-10 items-center justify-center text-gray-400">…</span>
                       )}
                     </React.Fragment>
                   );
@@ -395,8 +379,7 @@ export default function WarehouseCastor() {
               <button
                 onClick={() => goToPage(currentPage + 1)}
                 disabled={currentPage === totalPages}
-                aria-label="Next page"
-                className="flex h-10 w-10 items-center justify-center rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-40 disabled:pointer-events-none dark:border-slate-700 dark:text-slate-400 dark:hover:bg-slate-800"
+                className="flex h-10 w-10 items-center justify-center rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-40"
               >
                 <FaChevronRight className="text-sm" />
               </button>
@@ -408,30 +391,30 @@ export default function WarehouseCastor() {
       {/* Product Detail Modal */}
       {selectedProduct && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4"
           onClick={() => setSelectedProduct(null)}
         >
           <div
-            className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-2xl bg-white dark:bg-slate-900 shadow-2xl"
+            className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-2xl bg-white shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             <button
               onClick={() => setSelectedProduct(null)}
-              aria-label="Close modal"
-              className="absolute top-5 right-5 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 text-gray-800 hover:bg-gray-200 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700 transition-colors"
+              className="absolute top-5 right-5 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors"
             >
               ✕
             </button>
 
             <div className="p-6 md:p-10">
-              <div className="flex items-start gap-4">
-                <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
+              <div className="flex items-start justify-between gap-4">
+                <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
                   {selectedProduct.name}
                 </h2>
                 {selectedProduct.badge && (
                   <span
                     className={`inline-block px-3 py-1 text-xs font-bold uppercase rounded-full text-white ${
-                      selectedProduct.badge === "top-seller"
+                      selectedProduct.badge?.toLowerCase().includes("top") ||
+                      selectedProduct.badge?.toLowerCase().includes("heavy")
                         ? "bg-blue-600"
                         : "bg-green-600"
                     }`}
@@ -442,8 +425,7 @@ export default function WarehouseCastor() {
               </div>
 
               <div className="mt-8 grid gap-10 md:grid-cols-2">
-                {/* Image */}
-                <div className="flex items-center justify-center bg-gray-50 dark:bg-slate-800 rounded-xl overflow-hidden aspect-square">
+                <div className="flex items-center justify-center bg-gray-50 rounded-xl overflow-hidden aspect-square">
                   {selectedProduct.image ? (
                     <img
                       src={selectedProduct.image}
@@ -452,64 +434,51 @@ export default function WarehouseCastor() {
                       loading="lazy"
                     />
                   ) : (
-                    <div className="text-gray-400 dark:text-slate-500 text-center p-12">
-                      Image not available
-                    </div>
+                    <div className="text-gray-400 text-center p-12">Image not available</div>
                   )}
                 </div>
 
-                {/* Details */}
                 <div className="space-y-6">
-                  <dl className="grid grid-cols-2 gap-5">
+                  <dl className="grid grid-cols-2 gap-6">
                     <div>
-                      <dt className="text-sm text-gray-500 dark:text-slate-400">
-                        Load Capacity
-                      </dt>
+                      <dt className="text-sm text-gray-500">Load Capacity</dt>
                       <dd className="mt-1 text-xl font-semibold">
                         {selectedProduct.load_capacity_kg} kg
                       </dd>
                     </div>
                     <div>
-                      <dt className="text-sm text-gray-500 dark:text-slate-400">
-                        Wheel Diameter
-                      </dt>
+                      <dt className="text-sm text-gray-500">Wheel Diameter</dt>
                       <dd className="mt-1 text-xl font-semibold">
                         {selectedProduct.wheel_diameter_mm} mm
                       </dd>
                     </div>
                     <div>
-                      <dt className="text-sm text-gray-500 dark:text-slate-400">
-                        Material
-                      </dt>
+                      <dt className="text-sm text-gray-500">Material</dt>
                       <dd className="mt-1 text-xl font-semibold">
                         {selectedProduct.wheel_material}
                       </dd>
                     </div>
-                    <div>
-                      <dt className="text-sm text-gray-500 dark:text-slate-400">
-                        Height
-                      </dt>
-                      <dd className="mt-1 text-xl font-semibold">
-                        {selectedProduct.height_mm} mm
-                      </dd>
-                    </div>
+                    {selectedProduct.height_mm && (
+                      <div>
+                        <dt className="text-sm text-gray-500">Overall Height</dt>
+                        <dd className="mt-1 text-xl font-semibold">
+                          {selectedProduct.height_mm} mm
+                        </dd>
+                      </div>
+                    )}
                   </dl>
 
-                  <div>
-                    <h3 className="font-semibold text-gray-900 dark:text-white">
-                      Ideal for
-                    </h3>
-                    <p className="mt-2 text-gray-700 dark:text-slate-300">
-                      {selectedProduct.ideal_for}
-                    </p>
-                  </div>
-
-                  {selectedProduct.key_features.length > 0 && (
+                  {selectedProduct.ideal_for && (
                     <div>
-                      <h3 className="font-semibold text-gray-900 dark:text-white">
-                        Key Features
-                      </h3>
-                      <ul className="mt-3 space-y-2 pl-5 list-disc text-gray-700 dark:text-slate-300">
+                      <h3 className="font-semibold text-gray-900">Ideal for</h3>
+                      <p className="mt-2 text-gray-700">{selectedProduct.ideal_for}</p>
+                    </div>
+                  )}
+
+                  {selectedProduct.key_features?.length > 0 && (
+                    <div>
+                      <h3 className="font-semibold text-gray-900">Key Features</h3>
+                      <ul className="mt-3 space-y-2 pl-5 list-disc text-gray-700">
                         {selectedProduct.key_features.map((f, i) => (
                           <li key={i}>{f}</li>
                         ))}
@@ -522,13 +491,16 @@ export default function WarehouseCastor() {
               <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-end">
                 <button
                   onClick={() => setSelectedProduct(null)}
-                  className="px-8 py-3 rounded-xl border border-gray-300 dark:border-slate-600 text-gray-700 dark:text-slate-300 hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors"
+                  className="px-8 py-3 rounded-xl border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors"
                 >
                   Close
                 </button>
-                <button className="px-8 py-3 rounded-xl bg-blue-600 text-white font-medium hover:bg-blue-700 transition-colors">
+                <a
+                  href="/contact"
+                  className="px-8 py-3 rounded-xl bg-blue-600 text-white font-medium hover:bg-blue-700 transition-colors text-center"
+                >
                   Inquire Now
-                </button>
+                </a>
               </div>
             </div>
           </div>
@@ -538,21 +510,23 @@ export default function WarehouseCastor() {
   );
 }
 
-// ────────────────────────────────────────────────
 function ProductCard({ product, viewMode, onViewDetails }) {
   const isList = viewMode === "list";
 
   return (
     <article
-      className={`group relative flex overflow-hidden rounded-xl border border-gray-200 bg-white transition-all hover:shadow-md hover:border-gray-300 dark:border-slate-700 dark:bg-slate-900 dark:hover:border-slate-600 ${
-        isList ? "flex-row items-center gap-6 p-5" : "flex-col"
+      className={`group relative overflow-hidden rounded-xl border border-gray-200 bg-white transition-all hover:shadow-lg hover:border-gray-300 ${
+        isList ? "flex items-center gap-6 p-5" : "flex flex-col"
       }`}
     >
       {product.badge && (
         <div className="absolute top-3 left-3 z-10">
           <span
             className={`inline-block px-2.5 py-1 text-xs font-bold uppercase rounded-md text-white ${
-              product.badge === "top-seller" ? "bg-blue-600" : "bg-green-600"
+              product.badge?.toLowerCase().includes("top") ||
+              product.badge?.toLowerCase().includes("heavy")
+                ? "bg-blue-600"
+                : "bg-green-600"
             }`}
           >
             {product.badge.replace("-", " ")}
@@ -561,10 +535,8 @@ function ProductCard({ product, viewMode, onViewDetails }) {
       )}
 
       <div
-        className={`relative overflow-hidden bg-white dark:bg-slate-800 ${
-          isList
-            ? "h-36 w-36 shrink-0 rounded-lg"
-            : "aspect-square rounded-t-xl"
+        className={`relative overflow-hidden bg-gray-50 ${
+          isList ? "h-36 w-36 shrink-0 rounded-lg" : "aspect-square rounded-t-xl"
         }`}
       >
         {product.image ? (
@@ -572,57 +544,52 @@ function ProductCard({ product, viewMode, onViewDetails }) {
             src={product.image}
             alt={product.name}
             className={`h-full w-full object-contain transition-transform duration-300 group-hover:scale-105 ${
-              isList ? "p-3" : ""
+              isList ? "p-4" : ""
             }`}
             loading="lazy"
           />
         ) : (
-          <div className="h-full w-full flex items-center justify-center text-gray-400 dark:text-slate-500 text-sm">
+          <div className="h-full w-full flex items-center justify-center text-gray-400 text-sm">
             No image
           </div>
         )}
       </div>
 
       <div className={`flex flex-1 flex-col p-5 ${isList ? "p-0 pr-5" : ""}`}>
-        <div className="text-xs text-gray-500 dark:text-slate-400">
-          {product.code}
-        </div>
+        {product.code && (
+          <div className="text-xs text-gray-500 mb-1">{product.code}</div>
+        )}
 
         <h3
-          className={`font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors ${
-            isList ? "text-xl mt-1" : "text-lg mb-1.5"
+          className={`font-semibold text-gray-900 group-hover:text-blue-600 transition-colors ${
+            isList ? "text-xl mt-1" : "text-lg mb-2"
           }`}
         >
           {product.name}
         </h3>
 
-        <div
-          className={`flex flex-wrap gap-2.5 text-sm mb-4 ${isList ? "mt-2" : "mt-1"}`}
-        >
-          <div className="flex items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1 dark:bg-slate-800">
-            <IoMdFitness className="text-gray-500 dark:text-slate-400" />
+        <div className={`flex flex-wrap gap-2.5 text-sm ${isList ? "mt-2" : "mt-1"}`}>
+          <div className="flex items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1">
+            <IoMdFitness className="text-gray-500" />
             <span className="font-medium">{product.load_capacity_kg} kg</span>
           </div>
-          <div className="flex items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1 dark:bg-slate-800">
-            <MdDonutLarge className="text-gray-500 dark:text-slate-400" />
+          <div className="flex items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1">
+            <MdDonutLarge className="text-gray-500" />
             <span className="font-medium">{product.wheel_diameter_mm} mm</span>
           </div>
-          <div className="flex items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1 dark:bg-slate-800">
-            <span className="text-gray-500 dark:text-slate-400">Mat:</span>
-            <span className="font-medium">{product.wheel_material}</span>
+          <div className="flex items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1">
+            <span className="text-gray-500">Mat:</span>
+            <span className="font-medium truncate">{product.wheel_material}</span>
           </div>
         </div>
 
-        <div className="mt-auto flex gap-3 pt-4 border-t border-gray-200 dark:border-slate-700">
+        <div className="mt-auto flex gap-3 pt-5 border-t border-gray-200">
           <button
             onClick={onViewDetails}
-            className="flex-1 rounded-lg border border-blue-600 px-5 py-2.5 text-sm font-semibold text-blue-600 hover:bg-blue-50 dark:border-blue-500 dark:text-blue-400 dark:hover:bg-blue-950/40 transition-colors"
+            className="flex-1 rounded-lg border border-blue-600 px-5 py-2.5 text-sm font-semibold text-blue-600 hover:bg-blue-50 transition-colors"
           >
             View Details
           </button>
-          {/* <button className="flex-1 rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 transition-colors">
-            Inquire
-          </button> */}
         </div>
       </div>
     </article>
