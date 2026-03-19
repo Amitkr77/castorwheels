@@ -7,6 +7,7 @@ import {
 import EnquiryForm from "../components/EnquiryForm";
 import { Link } from "react-router-dom";
 import AboutCarousel from "../components/AboutCarousel";
+import AboutHero from "../components/AboutHero";
 
 const principles = [
   {
@@ -35,8 +36,7 @@ const principles = [
 export default function About() {
   return (
     <div className="bg-gray-50 text-[#0d131b] font-display overflow-x-hidden">
-
-      <AboutCarousel/>
+      <AboutCarousel />
 
       {/* Stats */}
       <div className="w-full bg-white border-b border-gray-200">
@@ -68,7 +68,7 @@ export default function About() {
             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-gray-900">
               Who We Are
             </h2>
-            <div className="mt-4 inline-block h-1 w-24 bg-gradient-to-r from-blue-500 to-blue-700 rounded-full"></div>
+            <div className="mt-4 inline-block h-1 w-24 bg-linear-to-r from-blue-500 to-blue-700 rounded-full"></div>
           </div>
 
           <div className="text-lg prose prose-lg md:prose-xl prose-slate mx-auto max-w-7xl text-center lg:text-justify">
@@ -169,26 +169,28 @@ export default function About() {
               </div>
             </div>
 
-            <div className="flex-1 order-1 lg:order-2 w-full">
+            {/* <div className="flex-1 order-1 lg:order-2 w-full">
               <div className="relative rounded-2xl overflow-hidden shadow-2xl aspect-4/3 lg:aspect-auto h-full">
                 <img
                   alt="Close-up of precision heavy-duty castor wheel being manufactured"
                   className="object-cover w-full h-full"
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuBSMDUEmZ4Fp8tHTJxXOOzizUnwLmH0ZE1FCPC3yk_qXX1XFsy1UfPJe4tQERvfSmaJCihFozt7IusWYuWnD4tBImmfuwlqHjz3LnS45QdvXhkF3ziOqZiXQz0NQ9j2U0BMncfcKCqjeBaqxMpfKy3hsjGbpNzcwZrQb7e5qlfYOxaVtZ-hVVqLiygz0ssOQJcA_z0BxCtjh_4XxoTnjE7xmRj-fOZ4XMsuMZgvFf5M2VNy8mmNUcpSEHn0LdhKfwvRTOUYRDU50ocJ"
                 />
-                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
+                <div className="absolute bottom-0 left-0 right-0 bg-linear-to-t from-black/80 to-transparent p-6">
                   <p className="text-white font-medium text-sm sm:text-base">
                     Precision engineered in our Manesar facility
                   </p>
                 </div>
               </div>
-            </div>
+            </div> */}
+
+            <AboutHero/>
           </div>
         </div>
       </section>
 
       {/* Core Principles */}
-      <section className="py-16 bg-gradient-to-b from-gray-50 to-white relative overflow-hidden">
+      <section className="py-16 bg-linear-to-b from-gray-50 to-white relative overflow-hidden">
         <div className="absolute inset-0 opacity-20 pointer-events-none">
           <div className="absolute top-0 right-0 w-96 h-96 bg-blue-400/10 rounded-full blur-3xl -translate-y-1/3 translate-x-1/3" />
           <div className="absolute bottom-0 left-0 w-96 h-96 bg-teal-400/10 rounded-full blur-3xl translate-y-1/3 -translate-x-1/3" />
@@ -199,7 +201,7 @@ export default function About() {
             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-gray-900">
               Our Core Principles
             </h2>
-            <div className="mt-5 h-1.5 w-28 mx-auto bg-gradient-to-r from-blue-500 via-indigo-500 to-teal-500 rounded-full" />
+            <div className="mt-5 h-1.5 w-28 mx-auto bg-linear-to-r from-blue-500 via-indigo-500 to-teal-500 rounded-full" />
             <p className="mt-6 text-lg md:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
               Three foundational pillars shape every product we engineer, every
               process we refine, and every relationship we build.
@@ -227,7 +229,7 @@ export default function About() {
                     className={`
                       inline-flex items-center justify-center 
                       w-16 h-16 md:w-20 md:h-20 
-                      rounded-2xl bg-gradient-to-br 
+                      rounded-2xl bg-linear-to-br 
                       from-${principle.color}-500 to-${principle.color}-700 
                       text-white mb-6 
                       shadow-lg shadow-${principle.color}-700/30 
@@ -253,20 +255,21 @@ export default function About() {
       </section>
 
       {/* Our Journey */}
-      <section className="py-16 bg-gradient-to-b from-gray-50 via-white to-gray-100">
+      <section className="py-16 bg-linear-to-b from-gray-50 via-white to-gray-100">
         <div className="max-w-6xl mx-auto px-5 sm:px-6 lg:px-8">
           <div className="text-center mb-10 md:mb-14">
             <h2 className="text-4xl md:text-5xl lg:text-5.5xl font-extrabold tracking-tight text-gray-900">
               Our Journey
             </h2>
-            <div className="mt-4 h-1.5 w-24 mx-auto rounded-full bg-gradient-to-r from-blue-500 via-indigo-600 to-purple-600" />
+            <div className="mt-4 h-1.5 w-24 mx-auto rounded-full bg-linear-to-r from-blue-500 via-indigo-600 to-purple-600" />
             <p className="mt-5 text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed px-2 sm:px-0">
-              From small workshop to modern manufacturing — focused on quality & trust.
+              From small workshop to modern manufacturing — focused on quality &
+              trust.
             </p>
           </div>
 
           <div className="relative max-w-5xl mx-auto">
-            <div className="hidden md:block absolute top-[2.6rem] left-6 right-6 h-1 bg-gradient-to-r from-transparent via-gray-300 rounded-full" />
+            <div className="hidden md:block absolute top-[2rem] left-6 right-6 h-0.5 bg-linear-to-r from-transparent via-gray-300 rounded-full" />
 
             <div className="grid md:grid-cols-4 gap-6 md:gap-4 lg:gap-6 relative">
               {[
@@ -280,19 +283,19 @@ export default function About() {
                   year: "2024",
                   title: "Going Global",
                   desc: "Secured our first major international partnership and expanded exports.",
-                  color: "indigo",
+                  color: "blue",
                 },
                 {
                   year: "2025",
                   title: "Expansion to Haryana ",
                   desc: "Inaugurated a 50,000 sq. ft. fully automated manufacturing facility.",
-                  color: "teal",
+                  color: "blue",
                 },
                 {
                   year: "2026",
                   title: "Sustainable Future",
                   desc: "Launched eco-friendly and sustainable castor solutions.",
-                  color: "purple",
+                  color: "blue",
                 },
               ].map((item, i) => (
                 <div
@@ -312,8 +315,7 @@ export default function About() {
                     <span
                       className={`
                         text-base sm:text-lg md:text-base lg:text-lg font-bold 
-                        bg-gradient-to-br from-${item.color}-600 to-${item.color}-700 bg-clip-text text-transparent
-                      `}
+                        text-${item.color}-600                       `}
                     >
                       {item.year}
                     </span>
@@ -325,7 +327,7 @@ export default function About() {
                       rounded-2xl md:rounded-2.5xl p-5 sm:p-6 md:p-5 lg:p-6
                       bg-white border border-gray-200 shadow-md 
                       hover:shadow-xl hover:border-${item.color}-400
-                      transition-all duration-300 group-hover:-translate-y-1
+                      transition-all duration-300 group-hover:-translate-y-1 
                     `}
                   >
                     <h3 className="text-base sm:text-lg md:text-base lg:text-lg font-bold text-gray-900 mb-2.5 tracking-tight">
@@ -358,7 +360,8 @@ export default function About() {
               Leadership Team
             </h2>
             <p className="text-slate-600 text-lg max-w-2xl text-center mx-auto">
-              Meet the experts steering Casters Global towards innovation and excellence.
+              Meet the experts steering Casters Global towards innovation and
+              excellence.
             </p>
           </div>
 
